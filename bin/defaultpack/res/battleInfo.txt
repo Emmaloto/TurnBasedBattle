@@ -1,0 +1,31 @@
+
+BETA Test v 1.2
+
+Welcome to Emmanuel's hilariously simple turn-based battle game! 
+
+You control the armored character on the left with the button  
+choices down below. Here you can see what each of the buttons do!
+	  
+   - HEAL:       This heals your character for about 100-150 hp.
+   
+   - TRASH TALK: You make a snarky comment for 50 - 200 damage. 
+                  He's gonna need some ice for that burn!  
+                  
+   - ATTACK:     Normal attack that deals 50 - 200 damage.	  
+   
+   - SPECIAL:    SPECIAL attack (obviously) that deals 100 - 400 damage.
+   
+   - DANCE:      Does 0 damage. Seriously. However there is a 10% chance
+                 of awesomeness happening! Are you willing to risk it?
+  Hover over buttons to see summaries of button actions.
+  
+  Press the Replay button at the top to replay this game
+  Press h to hide this menu again and Esc to exit the game.
+  Note: This is a beta test. I cannot publish this because I am using copyright art
+  so please do NOT post this anywhere or distribute it. I would like info on bugs,
+  things that are not working right, and general improvements. This is a very 
+  rough version, so do not expect too much.
+  There is a lot of work to be done on the graphics, and new functions to be added.
+  E-mail me at icyblaze16@gmail.com to send in your info! Any constructive criticism
+  is greatly appreciated!!!	  
+   
