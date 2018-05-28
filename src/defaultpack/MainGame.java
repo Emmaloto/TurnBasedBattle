@@ -49,16 +49,18 @@ public class MainGame implements KeyListener{
 	  info = GameUtilities.getInputFromFile("defaultpack/battleInfo.txt", this);	  
 	  newGame.setInfoText(info);  
 	  newGame.setHelpScreen(infoScreen);	  
-	    
-	  // Load and use fonts
-	  Font title = GameUtilities.getFont("defaultpack/fonts/Philosopher-Italic.ttf", 80f, this);
-	  Font body = GameUtilities.getFont("defaultpack/fonts/Philosopher-Italic.ttf", 20f, this);
 	  
+	  Font title, body;
 	  
-	  if(title == null || body == null){ 
+	  try{
+	    // Load and use fonts
+	     title = GameUtilities.getFont("defaultpack/fonts/Philosopher-Italic.ttf", 80f, this);
+	     body = GameUtilities.getFont("defaultpack/fonts/Philosopher-Italic.ttf", 20f, this);
+	  }catch(NullPointerException e){
 		  title = new Font("SansSerif", Font.BOLD, 20);
-		  body = new Font("SansSerif", Font.BOLD, 20);;
+		  body = new Font("SansSerif", Font.BOLD, 20);
 	  }
+	  
 	  newGame.setInfoFont(title, body);
 	  /*
 	  helpInfo.setTitleFont(title);

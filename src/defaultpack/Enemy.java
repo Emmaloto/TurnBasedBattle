@@ -35,6 +35,8 @@ public class Enemy implements ActionListener{
   private boolean firstAttack,secondAttack, attackingTime, showHP, missHit;	
   private int charHit, fontSize;
   
+  private Sound chomp, bubbles;
+  
   
   private Timer timer = new Timer(100, this);
   
@@ -167,6 +169,8 @@ public class Enemy implements ActionListener{
 		  bigFishPos.concatenate(scaleVal);	  	  
   }
   
+  
+  
   // Runs the processes until the conditions are met and the booleans are negative
   public void actionPerformed(ActionEvent e) {
 	
@@ -174,6 +178,7 @@ public class Enemy implements ActionListener{
 	 
 	   // First attack
 	   if(firstAttack){ 
+		   
 
 	     defaultX = defaultX - 100;
 		 // Fish must HIT hero, not pass them
@@ -188,6 +193,8 @@ public class Enemy implements ActionListener{
 			 
 		 
 	   }else if(secondAttack){
+		   
+		   
 
 		   bigY = bigY - (int)(300 * scaleY);
 
@@ -233,6 +240,9 @@ public class Enemy implements ActionListener{
 	   if(firstAttack){
 	     rot = 50;
 	     setUpFish(damageToHero);
+	     bubbles.play();
+	   }else{
+		   chomp.play();
 	   }
 
 	   timer.start();
@@ -248,6 +258,8 @@ public class Enemy implements ActionListener{
 	  y = 500;	 
 
       r = 0;	  
+      
+      //bubbles.play();
   }
 
   
@@ -260,6 +272,8 @@ public class Enemy implements ActionListener{
 	  bigY = 2700;	
 	  
 	  bigFish = bigFishMouth;
+	  
+	  //chomp.play();
   }
   
   public void criticalAttack(){
@@ -321,6 +335,10 @@ public class Enemy implements ActionListener{
 		
 		bigFishMouth = ImageIO.read(this.getClass().getResource("res/enemy/bigfishAttack.png"));
 		bigFishSmile = ImageIO.read(this.getClass().getResource("res/enemy/bigfishsmile.png"));
+		
+		chomp = new Sound("audio/chomp.wav");
+		bubbles = new Sound("audio/bubbles.wav");
+		
 		
 	} catch (IOException e) {
 

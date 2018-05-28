@@ -56,6 +56,8 @@ public class TurnEngine extends JComponent implements ActionListener{
 
   private JFrame fr;
   private JButton attack, regenerate, taunt, sAttack, dance, resetButton;
+  
+  @SuppressWarnings("unused")
   private JMenuBar menu;
   
   // Amount of damage done (or undone) to characters
@@ -76,10 +78,13 @@ public class TurnEngine extends JComponent implements ActionListener{
   private String winText = ""; 
   private String infoText [] = new String[1];
   
-  private Font title = new Font(null), body;
+  private Font title, body;
   private float orgTitleSize, orgBodySize;
   
+  private Sound victClip, failClip, healClip, laughClip, danceClip[], specClip, hitClip[];
+  
   public TurnEngine(){
+	  
 	  // Set up elements
 	  loadImages();
 	  setTasks();
@@ -101,7 +106,7 @@ public class TurnEngine extends JComponent implements ActionListener{
 	  
 	  canvasX = fr.getWidth();
 	  canvasY = fr.getHeight();
-		
+	  
 	  // Add buttons
 	  JPanel buttonbar = new JPanel();
 	  buttonbar.setBackground(Color.DARK_GRAY);
@@ -121,6 +126,7 @@ public class TurnEngine extends JComponent implements ActionListener{
 	  dance.setIcon     (new ImageIcon(danceIcon));
 	  
 	  menu = new JMenuBar();
+	  
 	  
 	  // Change font of button hover text, and set text
       UIManager.put("ToolTip.font", new FontUIResource("SansSerif", Font.BOLD, 25));	  
@@ -148,6 +154,7 @@ public class TurnEngine extends JComponent implements ActionListener{
 		
 	  fr.add(buttonbar, BorderLayout.SOUTH);
 	  fr.add(resetButton, BorderLayout.NORTH);
+
 	  //fr.add(menu, BorderLayout.EAST);
 
 	  fr.setVisible(true);	
@@ -158,6 +165,7 @@ public class TurnEngine extends JComponent implements ActionListener{
 		  fr.setSize(1295, 800);
 	  }
 	  
+
 
   }
   
@@ -193,6 +201,7 @@ public class TurnEngine extends JComponent implements ActionListener{
   
   // For all the graphics on screen
   public void paintComponent(Graphics g){
+	  
 	  Graphics2D g2d = (Graphics2D)g;
 	  canvasX = fr.getWidth();
 	  canvasY = fr.getHeight();
@@ -255,6 +264,9 @@ public class TurnEngine extends JComponent implements ActionListener{
 		    }
 		}		
 	  }
+	  
+	  
+	  
   }
   
   public void setHelpScreen(Image infoBG){
@@ -281,9 +293,15 @@ public class TurnEngine extends JComponent implements ActionListener{
 
   // This is for resizing the text when the screen is resized
   public void resizeFonts(){
-    title = title.deriveFont((float) ( (rescaleW() + rescaleH())/2 * orgTitleSize ));
-    body = title; // Stopping annoying errors
-    body  = body.deriveFont((float) ( (rescaleW() + rescaleH())/2 * orgBodySize ));	  
+    try{
+	  Font swap = title;
+	  title = swap.deriveFont((float) ( (rescaleW() + rescaleH())/2 * orgTitleSize ));	
+	  swap = body; // Stopping annoying errors
+      body  = swap.deriveFont((float) ( (rescaleW() + rescaleH())/2 * orgBodySize ));
+    }catch(NullPointerException e){
+    	title = new Font("SansSerif", Font.BOLD, 30);
+    	body = new Font("SansSerif", Font.BOLD, 20);
+    }
 
   }
   
@@ -316,6 +334,8 @@ public class TurnEngine extends JComponent implements ActionListener{
 		fish.randomAttack(damageToHero);	
 		healPressed = true;
 
+		healClip.play();
+		
 		attackTime.schedule(changeImage,0);
 	
 		attackTime.schedule(heroHeal,1000);		
@@ -335,6 +355,8 @@ public class TurnEngine extends JComponent implements ActionListener{
 		damageToHero = GameUtilities.getRandomInteger(50, 250);
 		hero.taunt(damageToHero);
 		
+		laughClip.play();
+		
 		attackTime.schedule(changeImage,0);
 		attackTime.schedule(enemyLoseHP,3500);
 		attackTime.schedule(revertHero,5000);
@@ -350,6 +372,8 @@ public class TurnEngine extends JComponent implements ActionListener{
 		damageToHero = GameUtilities.getRandomInteger(50, 250);
 		hero.attack(damageToHero);
 		
+		hitClip[GameUtilities.getRandomInteger(0, 1)].play();
+		
 		attackTime.schedule(changeImage,0);
 		attackTime.schedule(enemyLoseHP,1500);
 		attackTime.schedule(revertHero,4000);
@@ -364,6 +388,8 @@ public class TurnEngine extends JComponent implements ActionListener{
 		damageToHero = GameUtilities.getRandomInteger(50, 250);
 		hero.specialAttack(damageToHero, 2400);
 		specialPressed = true;
+		
+		specClip.play();
 		
 		attackTime.schedule(changeImage,0);
 		attackTime.schedule(enemyLoseHP,2400);
@@ -382,13 +408,15 @@ public class TurnEngine extends JComponent implements ActionListener{
 		damageToHero = GameUtilities.getRandomInteger(50, 250);
 		hero.dance(damageToHero);
 		
+		danceClip[GameUtilities.getRandomInteger(0, 1)].play();
+		
 		attackTime.schedule(changeImage,0);
-		attackTime.schedule(enemyLoseHP,1500);
+		attackTime.schedule(enemyLoseHP,3500);
 		attackTime.schedule(revertHero,4000);
 		
 		
-		attackTime.schedule(heroLoseHP,6000);
-		attackTime.schedule(revert,8000);			
+		attackTime.schedule(heroLoseHP,7000);
+		attackTime.schedule(revert,9000);			
 		} 
 		else if(a.getSource() == resetButton){                          // reset game
 			reset();
@@ -517,6 +545,23 @@ public class TurnEngine extends JComponent implements ActionListener{
 		System.out.printf("\nFILE NOT FOUND!\n");
 	}	
 	  
+	  try{
+	    danceClip = new Sound[2];
+	    hitClip   = new Sound[2];
+	  }catch(NullPointerException n){
+	    	//n.printStackTrace();
+	    }
+	  
+	  victClip = new Sound("audio/badass-victory.wav");
+	  failClip = new Sound("audio/menacing.wav");
+	  
+	  healClip = new Sound("audio/heal.wav"); 
+	  laughClip= new Sound("audio/laughing.wav"); 
+	  danceClip[0] = new Sound("audio/dance-1.wav");
+	  danceClip[1] = new Sound("audio/dance-2.wav");
+	  specClip = new Sound("audio/fanfare.wav");
+	  hitClip[0] = new Sound("audio/attack-1.wav");
+	  hitClip[1] = new Sound("audio/attack-2.wav");
   }
   
   // Buttons all enabled/disabled
@@ -558,8 +603,13 @@ public class TurnEngine extends JComponent implements ActionListener{
 	  if(gameEnded){
 		  toggleButtons(false);
 		  attackTime.cancel();
-		  if(hero.getHealth() <= 0) gameResult = loseGame;
-		  else                      gameResult = winGame;
+		  if(hero.getHealth() <= 0){
+			  gameResult = loseGame;
+			  failClip.play();
+		  }else{                      
+			  gameResult = winGame;			  
+			  victClip.play();
+		  }
 		  
 		  repaint();
 		  resetButton.setEnabled(true);

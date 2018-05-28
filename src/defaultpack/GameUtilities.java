@@ -82,6 +82,7 @@ public class GameUtilities {
 	  
   }
   
+  
   /* Gets font from location */
   // Object is simply the instance of the class (this) you're in
   public static Font getFont(String location, float size, Object cl){
@@ -93,7 +94,9 @@ public class GameUtilities {
       Font f = Font.createFont(Font.TRUETYPE_FONT, i);
       font = f.deriveFont(Font.BOLD, size);
 	  
-	}catch(FontFormatException | IOException e){}
+	}catch(FontFormatException | IOException e){
+		e.printStackTrace();
+	}
 	
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     ge.registerFont(font);	
