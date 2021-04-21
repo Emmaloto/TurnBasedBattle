@@ -35,6 +35,7 @@ public class MainGame implements KeyListener{
   }
   
   public MainGame(){
+	  // Used to set up some UI elements not directly relevant to gameplay 
 	  try{
 	    infoScreen =  ImageIO.read(this.getClass().getResource("res/infoscreen.png"));
 	  }catch (IOException e) {}

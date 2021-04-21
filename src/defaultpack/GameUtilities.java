@@ -5,7 +5,7 @@
  * more common functions in other games I make.
  *
  * @author  Emmanuel Oluloto
- * @version 1.40, 24/02/18
+ * @version 1.41, 18/04/21 (dd/mm/yy)
  * Last Used On - BattleReloaded
  */
 
@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
 
 public class GameUtilities {
   
-	/* Generate random integers in a certain range. */
+	/* Generate random integers in a certain range, min & max included. */
   public static int getRandomInteger(int min, int max){
 	  
 	Random rand = new Random();
