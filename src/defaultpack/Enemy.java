@@ -12,6 +12,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,6 +23,7 @@ public class Enemy implements ActionListener {
 	private Image enemyImg;
 	private Image[] smallFish = new Image[1]; // smallfish array
 	private Image bigFish, bigFishSmile, bigFishMouth, littleFishImg, lilFishSkins[], bubble;
+	private HashMap<String, SceneElement> fishSkins = new HashMap<String, SceneElement>();
 	private HPResizeBar enemyHealth;
 
 	// Transformations
@@ -60,6 +63,9 @@ public class Enemy implements ActionListener {
 		// Scale with window size
 		scaleX = transform.getScaleX();
 		scaleY = transform.getScaleY();
+		
+		//Scale down fish
+		transform.scale(.5, .5);
 
 		enemyHealth.drawHealth(scaleX, scaleY, g);
 		transform.rotate(rot);
@@ -331,25 +337,46 @@ public class Enemy implements ActionListener {
 		enemyHealth.setHealth(hit);
 	}
 
+	public String [] getSkinNames() {
+		String [] strArray = {};
+		return fishSkins.keySet().toArray(strArray);
+	}
+	
+	public void setSelectedSkin(String skinName) {
+		enemyImg = fishSkins.get(skinName).getImage();
+		if(enemyImg == null ) enemyImg = fishSkins.get("DEFAULT Carp").getImage();
+	}	
 	// Loads all resources
 	private void loadImages() {
 		try {
 
-			enemyImg = ImageIO.read(this.getClass().getResource("res/enemy/fish.png"));
+//			fishSkins.put( "", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/defaultbigcarp.png"))) );
+			fishSkins.put( "DEFAULT Carp", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/defaultbigcarp.png"))) );
+			fishSkins.put( "Big Blue", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/bigblue.png"))) );
+			fishSkins.put( "Snaggletooth", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/grumpyfish.png"))) );
+			fishSkins.put( "Hamerhead Shark", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/hammerhead.png"))) );
+			fishSkins.put( "Long Fish", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/longfish.png"))) );
+			fishSkins.put( "Puprle Fish", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/purplefish.png"))) );
+			fishSkins.put( "Salty Shark", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/shark.png"))) );
 
-			littleFishImg = ImageIO.read(this.getClass().getResource("res/enemy/fishsmall.png")); // Default
-			Image fishSkinA = ImageIO.read(this.getClass().getResource("res/enemy/fishsmallblack.png"));
-			Image fishSkinB = ImageIO.read(this.getClass().getResource("res/enemy/fishsmallblue.png"));
-			Image fishSkinC = ImageIO.read(this.getClass().getResource("res/enemy/fishsmallblue2.png"));
+			enemyImg = fishSkins.get("DEFAULT Carp").getImage();
 
+			ArrayList<Image> allLittleFish = new ArrayList<Image>();
+			littleFishImg = ImageIO.read(this.getClass().getResource("res/enemy/smallfish/fishsmall.png")); // Default
+			allLittleFish.add(littleFishImg);
+			allLittleFish.add( ImageIO.read(this.getClass().getResource("res/enemy/smallfish/fishsmallblack.png")) ) ;
+			allLittleFish.add( ImageIO.read(this.getClass().getResource("res/enemy/smallfish/fishsmallblue.png")) );
+			allLittleFish.add( ImageIO.read(this.getClass().getResource("res/enemy/smallfish/fishsmallblue2.png")) );
+			allLittleFish.add( ImageIO.read(this.getClass().getResource("res/enemy/smallfish/fishsmallbigblue.png")) );
+			allLittleFish.add( ImageIO.read(this.getClass().getResource("res/enemy/smallfish/fishsmallorange.png")) );
+			
+			lilFishSkins = new Image[1];
+			lilFishSkins = allLittleFish.toArray(lilFishSkins);
+			
+			
 			bubble = ImageIO.read(this.getClass().getResource("res/enemy/bubble.png"));
 
-			lilFishSkins = new Image[4];
-			lilFishSkins[0] = littleFishImg;
-			lilFishSkins[1] = fishSkinA;
-			lilFishSkins[2] = fishSkinB;
-			lilFishSkins[3] = fishSkinC;
-
+			
 			bigFishMouth = ImageIO.read(this.getClass().getResource("res/enemy/bigfishAttack.png"));
 			bigFishSmile = ImageIO.read(this.getClass().getResource("res/enemy/bigfishsmile.png"));
 

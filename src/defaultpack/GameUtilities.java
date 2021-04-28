@@ -82,6 +82,12 @@ public class GameUtilities {
 	  
   }
   
+  // Load all images in specified directory
+  
+  
+  // Open Website
+  // https://stackoverflow.com/questions/748895/how-do-you-open-web-pages-in-java
+  
   
   /* Gets font from location */
   // Object is simply the instance of the class (this) you're in

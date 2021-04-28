@@ -20,13 +20,12 @@ choices down below. Here you can see what each of the buttons do!
   Press the Replay button at the top to replay this game
   Press h to hide this menu again and Esc to exit the game.
   
-    In previous versions of the game, I actually had an armored character, 
-  but the art did not belong to me, so I had to replace it with this text instead.
-  I'm hoping to get in touch with an artist who can make some original art.
-  If you are one who is interested, please shoot me an e-mail!
-    
-  As you can probably see, there is a lot of work to be done on the graphics, 
-  and new functions to be added.
-  E-mail me at icyblaze16@gmail.com to send in your info! Any constructive criticism
+  I've been able to add original & free art to the game, as well as a few UI 
+  customization options, like changing the background or changing the fish design. 
+  You can try them out by accessing the menu bar at the top.
+ 
+  This game is just a fun little pet project of mine. You can check out some of 
+  my other work at my website in the "File" menu options.
+  You can e-mail me at icyblaze16@gmail.com. Any polite feedback
   is greatly appreciated!!!	  
    

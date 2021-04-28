@@ -17,6 +17,75 @@ public class SceneController {
 	
 	public SceneController() {
 		loadImages();
+		setInstanceNames();
+		applyDefaultTransform();
+		setCustomTransforms();
+	}
+	
+	private void setInstanceNames() {
+	    // looping over keys
+        for (String sceneName : backgrounds.keySet())
+        {
+            // search  for value
+        	SceneElement scene = backgrounds.get(sceneName);
+        	scene.setName(sceneName);
+        }
+		
+
+        for (String sceneName : foregrounds.keySet())
+        {
+        	SceneElement scene = foregrounds.get(sceneName);
+        	scene.setName(sceneName);
+        }
+		
+	}
+
+	private void applyDefaultTransform() {
+		for(SceneElement scene : backgrounds.values()) {
+			AffineTransform tr = new AffineTransform(scene.getTransform());
+			tr.scale(.86, .86);
+			tr.translate(-50, -400);
+			
+			scene.setTransform(tr);
+		}
+		
+		for(SceneElement scene : foregrounds.values()) {
+			AffineTransform tr = new AffineTransform(scene.getTransform());
+			tr.scale(.8, .8);
+			
+			scene.setTransform(tr);
+		}
+	}
+	
+	void setCustomTransforms() {
+		// BG
+		AffineTransform cus = backgrounds.get("Cartoony Sea").getTransform();
+		cus.translate(-80, 400);
+		cus.scale(.91, 1);
+		
+		AffineTransform cus2 = backgrounds.get("The Aquarium").getTransform();
+		cus2.translate(0, 200);
+		cus2.scale(.8, .8);
+		
+		AffineTransform cus3 = backgrounds.get("Starfishy").getTransform();
+		cus3.translate(-100, 80);
+		cus3.scale(.91, .91);
+		
+		AffineTransform cus4 = backgrounds.get("Yellow School").getTransform();
+		cus4.translate(50, 400);
+		cus4.scale(.95, .95);
+		
+		// FG
+		AffineTransform cusf = foregrounds.get("Seaweed").getTransform();
+		cusf.translate(0, 310);
+		
+		AffineTransform cusf2 = foregrounds.get("Rocky Reef").getTransform();
+		// cusf2.translate(0, -100);
+		cusf2.scale(1, -1); cusf2.translate(200, -1320);
+
+		AffineTransform cusf3 = foregrounds.get("TULIPS?!?").getTransform();
+		cusf3.scale(.625, .625); 
+		cusf3.translate(-180, 550);
 	}
 	
 	// For external selection of background
@@ -42,10 +111,10 @@ public class SceneController {
 	
 	private void drawImageOnCanvas(SceneElement scene, AffineTransform transform, Graphics2D g) {
 		if(scene != null) {
-			AffineTransform t = new AffineTransform(scene.getTransform());
-			t.concatenate(transform);
+			AffineTransform trans = new AffineTransform(scene.getTransform());
+			trans.concatenate(transform);
 			
-			g.drawImage(scene.getImage(), t, null);
+			g.drawImage(scene.getImage(), trans, null);
 		}
 		
 	}
@@ -65,14 +134,25 @@ public class SceneController {
 		
 		try {
 			// BGs
-			backgrounds.put( "Cartoony Sea", new SceneElement("Cartoony Sea", ImageIO.read(this.getClass().getResource("res/scenery/underwaterbg.png"))) );
-			backgrounds.put( "Underwater Clearing", new SceneElement("Underwater Clearing", ImageIO.read(this.getClass().getResource("res/scenery/mainmenu.png"))) );
-			backgrounds.put( "Undersea Shipwreck", new SceneElement("Shipwreck under the Sea", ImageIO.read(this.getClass().getResource("res/scenery/fon5.png"))) );
+			backgrounds.put( "Cartoony Sea", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/underwaterbg.png"))) );
+			backgrounds.put( "The Aquarium", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/aquarium-147660_1280.png"))) );
+			backgrounds.put( "Starfishy", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/the-bottom-of-the-sea.png"))) );
+			backgrounds.put( "Yellow School", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/sea-2418209.png"))) );
+			
+			backgrounds.put( "Sponges and Shells", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/mainmenu.png"))) );
+			backgrounds.put( "Undersea Sandy Beach", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/fon0.png"))) );
+			backgrounds.put( "Underwater Clearing", new SceneElement( ImageIO.read(this.getClass().getResource("res/scenery/fon2.png"))) );
+			backgrounds.put( "Better in Pink", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/fon3.png"))) );
+			backgrounds.put( "Sunk History", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/fon4.png"))) );
+			backgrounds.put( "Colorful Undersea Flora", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/fon5.png"))) );
+			backgrounds.put( "Long Lost Treasure", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/fon6.png"))) );
+			backgrounds.put( "Another Shipwreck", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/ship.jpg"))) );
 			
 			// FGs
 			foregrounds.put( "Rocky Reef", new SceneElement("Rocky Reef", ImageIO.read(this.getClass().getResource("res/scenery/rifs_foreground.png"))) );
 			foregrounds.put( "Seaweed", new SceneElement("Seaweed", ImageIO.read(this.getClass().getResource("res/scenery/shoal_foreground.png"))) );
-			
+			foregrounds.put( "TULIPS?!?", new SceneElement(ImageIO.read(this.getClass().getResource("res/scenery/tulip-3024741.png"))) );
+						
 		
 		} catch (IOException e) {
 			

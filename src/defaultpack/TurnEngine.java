@@ -42,7 +42,7 @@ public class TurnEngine extends JComponent implements ActionListener {
 	private TimerTask changeImage, enemyLoseHP, heroLoseHP, heroHeal, revertHero, revert, changeHealth;
 
 	// Button icons
-	private Image danceIcon, fightIcon, healIcon, laughIcon, sAttackIcon, photoIcon, sfishIcon,
+	private Image danceIcon, fightIcon, healIcon, laughIcon, sAttackIcon, photoIcon, sfishIcon, clothIcon, onefishIcon, manyfishIcon,
 	              infoScreen, winGame, loseGame, gameResult;
 
 	private JFrame fr;
@@ -115,19 +115,44 @@ public class TurnEngine extends JComponent implements ActionListener {
 		sAttack.setIcon(new ImageIcon(sAttackIcon));
 		dance.setIcon(new ImageIcon(danceIcon));
 
-		// Set up menu
+		// Set up menu bar and submenus
 		menu = new JMenuBar();
 		menu.setBackground(new Color(204, 204, 204));
 		
 	    fileMenu = new JMenu("File");	    
 	    bgsMenu  = new JMenu("Backgrounds");
 	    fgsMenu  = new JMenu("Foregrounds");
-	    enemyMenu  = new JMenu("Enemy Options");
+	    enemyMenu  = new JMenu("Foe Customization");
+
+	    JMenuItem openSite = new JMenuItem("Visit My Website");	    
+	    openSite.addActionListener(this);
+	    fileMenu.add(openSite);
 	    
 	    JMenuItem close = new JMenuItem("Close Game");	    
+	    close.addActionListener(this);
 	    fileMenu.add(close);
 	    
-	    // Setting up scene UI controls
+	    // -- Setting up skin controls
+	    JMenu skins = new JMenu("Skins");
+	    String [] listOfFishskins = fish.getSkinNames();
+	    for(String name: listOfFishskins) {
+		    JMenuItem skinEntry = new JMenuItem(name, new ImageIcon(clothIcon));
+		    skinEntry.addActionListener(this);
+		    skins.add(skinEntry);
+	    }
+	    
+	    JMenu minifish = new JMenu("Toggle MiniFish");
+	    JMenuItem varType = new JMenuItem("Various Types", new ImageIcon(manyfishIcon));
+	    JMenuItem oneType = new JMenuItem("One Type", new ImageIcon(onefishIcon));
+	    varType.addActionListener(this);
+	    oneType.addActionListener(this);
+	    minifish.add(varType);
+	    minifish.add(oneType);
+	    
+	    enemyMenu.add(skins);
+	    enemyMenu.add(minifish);
+	    
+	    // -- Setting up scene UI controls
 	    sceneControl = new SceneController();
 
 	    JMenuItem removeValue = new JMenuItem("NONE");
@@ -151,19 +176,11 @@ public class TurnEngine extends JComponent implements ActionListener {
 		    fg.addActionListener(this);
 		    fgsMenu.add(fg);
 	    }
-
-	    
-//	    fileMenu.addMenuListener(this);
-//	    bgsMenu.addMenuListener(this);
-//	    fgsMenu.addMenuListener(this);
-//	    enemyMenu.addMenuListener(this);
 	    
 	    menu.add(fileMenu);
 	    menu.add(bgsMenu);
 	    menu.add(fgsMenu);
 	    menu.add(enemyMenu);
-	    
-
 
 
 		// Change font of button hover text, and set text
@@ -191,12 +208,6 @@ public class TurnEngine extends JComponent implements ActionListener {
 		fr.add(buttonbar, BorderLayout.SOUTH);
 		fr.add(resetButton, BorderLayout.NORTH);
 		fr.setJMenuBar(menu);
-
-		// fr.add(menu, BorderLayout.EAST);
-		// Change BG
-		// Change FG
-		// Randomize attack fish FG
-		// Change enemy skin
 
 		fr.setVisible(true);
 
@@ -296,9 +307,11 @@ public class TurnEngine extends JComponent implements ActionListener {
 
 		// Enemy
 		AffineTransform transE = new AffineTransform();
-		transE.translate(canvasW / 1.6, setPosY(2));
+//		transE.translate(canvasW / 1.6, setPosY(2));
+		transE.translate(setPosX(2), setPosY(8));
 		transE.concatenate(scaleToCanvas);
 		fish.drawEnemy(transE, g2d);
+//		System.out.println("0, "+setPosY(10)+"|" + canvasW / 1.6 + "," + setPosY(2));
 		
 		// Foreground here
 		sceneControl.drawForeground(new AffineTransform(scaleToCanvas), g2d);
@@ -478,9 +491,6 @@ public class TurnEngine extends JComponent implements ActionListener {
 			reset();
 		}
 
-		// TODO
-//		https://stackoverflow.com/questions/11979763/how-to-get-the-name-of-a-jmenu-when-a-jmenuitem-is-clicked?rq=1
-//		https://stackoverflow.com/questions/8589605/menulistener-implementation-how-to-detect-which-jmenu-was-clicked
 		// Change from Menu
 		if(a.getSource().getClass() == JMenuItem.class){
 			
@@ -489,14 +499,19 @@ public class TurnEngine extends JComponent implements ActionListener {
 			JMenu chosenMenu = (JMenu) chosenPopup.getInvoker();
 			
 			if(chosenMenu.getText() == "Backgrounds") {
-//				System.out.println("BGS CHANGED: " + a.getActionCommand());
-//				System.out.println("Top Menu: " + chosenMenu.getText() + " ");		
 				sceneControl.setBackground(a.getActionCommand());
-//				chosen
 			}else if( chosenMenu.getText() == "Foregrounds") {
 				sceneControl.setForeground(a.getActionCommand());
+			}else if( chosenMenu.getText() == "Skins") {
+				fish.setSelectedSkin(a.getActionCommand());
+			}else if( chosenMenu.getText() == "Toggle MiniFish") {
+				if(a.getActionCommand() == "Various Types") fish.randomizeFish(true);				
+				else fish.randomizeFish(false);		
+			}else {
+				System.out.println("Top Menu: " + chosenMenu.getText() + " ");	
+				System.out.println("   Option selected: " + a.getActionCommand());
 			}
-			
+
 			
 			repaint();
 		}
@@ -666,6 +681,9 @@ public class TurnEngine extends JComponent implements ActionListener {
 			
 			photoIcon = ImageIO.read(this.getClass().getResource("icons/photo-photography.png"));
 			sfishIcon = ImageIO.read(this.getClass().getResource("icons/starfish_icon.png"));
+			clothIcon = ImageIO.read(this.getClass().getResource("icons/coaticon.png"));
+			onefishIcon = ImageIO.read(this.getClass().getResource("icons/onefishicon.png"));
+			manyfishIcon = ImageIO.read(this.getClass().getResource("icons/manyfishicon.png"));
 
 			winGame = ImageIO.read(this.getClass().getResource("res/win_text.png"));
 			loseGame = ImageIO.read(this.getClass().getResource("res/lose_text.png"));
