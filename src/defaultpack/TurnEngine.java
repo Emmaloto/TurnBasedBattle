@@ -219,67 +219,6 @@ public class TurnEngine extends JComponent implements ActionListener {
 
 	}
 
-	// For easy restart of the game
-	public void setup() {
-
-		hero = new Hero(this);
-		fish = new Enemy(this);
-
-		toggleButtons(true);
-		healPressed = false;
-		specialPressed = false;
-		gameEnded = false;
-		attackTime = new Timer("Attack Begins");
-
-		turnText = "Your Turn";
-		winText = "";
-
-		title = new Font(null);
-		body = new Font(null);
-	}
-
-	public JFrame getFrame() {
-		return fr;
-	}
-
-	public boolean gameHasEnded() {
-		return gameEnded;
-	}
-
-	public void setHelpScreen(Image infoBG) {
-		infoScreen = infoBG;
-	}
-
-	public void setInfoText(String... info) {
-		infoText = info;
-	}
-
-	public void showHelp() {
-		showInst = !showInst;
-		toggleButtons(!showInst);
-	}
-
-	public void setInfoFont(Font f, Font b) {
-		title = f;
-		body = b;
-
-		orgTitleSize = title.getSize();
-		orgBodySize = body.getSize();
-	}
-	
-	
-	public void close() {
-		fr.dispose();
-		System.exit(0);
-	}
-
-	// Reset for new play
-	private void reset() {
-		setup();
-		setTasks();
-		repaint();
-	}
-	
 	
 	// ********* DRAWING + VAR CONFIG FOR DRAWING/RESIZING ********* //
 
@@ -307,11 +246,10 @@ public class TurnEngine extends JComponent implements ActionListener {
 
 		// Enemy
 		AffineTransform transE = new AffineTransform();
-//		transE.translate(canvasW / 1.6, setPosY(2));
 		transE.translate(setPosX(2), setPosY(8));
 		transE.concatenate(scaleToCanvas);
 		fish.drawEnemy(transE, g2d);
-//		System.out.println("0, "+setPosY(10)+"|" + canvasW / 1.6 + "," + setPosY(2));
+
 		
 		// Foreground here
 		sceneControl.drawForeground(new AffineTransform(scaleToCanvas), g2d);
@@ -498,7 +436,10 @@ public class TurnEngine extends JComponent implements ActionListener {
 			JPopupMenu chosenPopup = (JPopupMenu) chosen.getParent();
 			JMenu chosenMenu = (JMenu) chosenPopup.getInvoker();
 			
-			if(chosenMenu.getText() == "Backgrounds") {
+			if(chosenMenu.getText() == "File") {
+				if(a.getActionCommand() == "Visit My Website") GameUtilities.openWebsite("https://icyblaze16.wixsite.com/emmaloto");				
+				else if(a.getActionCommand() == "Close Game")  close();
+			}else if(chosenMenu.getText() == "Backgrounds") {
 				sceneControl.setBackground(a.getActionCommand());
 			}else if( chosenMenu.getText() == "Foregrounds") {
 				sceneControl.setForeground(a.getActionCommand());
@@ -668,6 +609,70 @@ public class TurnEngine extends JComponent implements ActionListener {
 
 	}
 
+	
+
+	// For easy restart of the game
+	public void setup() {
+
+		hero = new Hero(this);
+		fish = new Enemy(this);
+
+		toggleButtons(true);
+		healPressed = false;
+		specialPressed = false;
+		gameEnded = false;
+		attackTime = new Timer("Attack Begins");
+
+		turnText = "Your Turn";
+		winText = "";
+
+		title = new Font(null);
+		body = new Font(null);
+	}
+
+	public JFrame getFrame() {
+		return fr;
+	}
+
+	public boolean gameHasEnded() {
+		return gameEnded;
+	}
+
+	public void setHelpScreen(Image infoBG) {
+		infoScreen = infoBG;
+	}
+
+	public void setInfoText(String... info) {
+		infoText = info;
+	}
+
+	public void showHelp() {
+		showInst = !showInst;
+		toggleButtons(!showInst);
+	}
+
+	public void setInfoFont(Font f, Font b) {
+		title = f;
+		body = b;
+
+		orgTitleSize = title.getSize();
+		orgBodySize = body.getSize();
+	}
+	
+	
+	public void close() {
+		fr.dispose();
+		System.exit(0);
+	}
+
+	// Reset for new play
+	private void reset() {
+		setup();
+		setTasks();
+		repaint();
+	}
+	
+	
 	
 	// Loads all resources
 	private void loadImages() {

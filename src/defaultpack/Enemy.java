@@ -356,7 +356,7 @@ public class Enemy implements ActionListener {
 			fishSkins.put( "Snaggletooth", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/grumpyfish.png"))) );
 			fishSkins.put( "Hamerhead Shark", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/hammerhead.png"))) );
 			fishSkins.put( "Long Fish", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/longfish.png"))) );
-			fishSkins.put( "Puprle Fish", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/purplefish.png"))) );
+			fishSkins.put( "Purple Fish", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/purplefish.png"))) );
 			fishSkins.put( "Salty Shark", new SceneElement(ImageIO.read(this.getClass().getResource("res/enemy/fishskins/shark.png"))) );
 
 			enemyImg = fishSkins.get("DEFAULT Carp").getImage();
