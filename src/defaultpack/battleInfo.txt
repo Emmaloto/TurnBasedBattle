@@ -1,4 +1,4 @@
-BETA Test v 1.4
+Game Version v 1.6
 
 Welcome to Emmanuel's hilariously simple turn-based battle game! 
 

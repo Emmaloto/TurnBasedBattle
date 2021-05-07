@@ -93,6 +93,7 @@ public class SceneTestingFrame extends JComponent{
 	}
 	
 	// Sets x and y from original 1600, 1000
+	@SuppressWarnings("unused")
 	private int setPosX(int val) {
 		return (int) canvasW / val;
 	}

@@ -18,8 +18,11 @@ import java.awt.GraphicsEnvironment;
 import java.io.BufferedReader;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import javax.imageio.ImageIO;
 
@@ -29,6 +32,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 public class GameUtilities {
 
@@ -86,26 +90,56 @@ public class GameUtilities {
 	}
 
 	/* Load all images in specified directory into ArrayList */
+	// Need to differentiate between JAR and IDE - currently only works for IDE
+	/* POTENTIAL Fixes*/
+	// https://mkyong.com/java/java-read-a-file-from-resources-folder/
+	// https://stackoverflow.com/questions/11012819/how-can-i-get-a-resource-folder-from-inside-my-jar-file
+	// https://stackoverflow.com/questions/1429172/how-to-list-the-files-inside-a-jar-file
 	public static ArrayList<Image> loadAllFromDirectory(String dirPath, Object cl) {
-		// Creates file using getResource URL object
-		final File dir = new File(cl.getClass().getResource(dirPath).getPath());
-
 		ArrayList<Image> imageList = new ArrayList<Image>();
 
-		for (File fileEntry : dir.listFiles()) {
+		final File jarFile = new File(cl.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+
+		if (jarFile.isFile()) { // Run with JAR file
 			try {
-				Image frame = ImageIO.read(fileEntry);
-				imageList.add(frame);
+
+				final JarFile jar = new JarFile(jarFile);
+				final Enumeration<JarEntry> entries = jar.entries(); // gives ALL entries in jar
+				while (entries.hasMoreElements()) {
+					final String name = entries.nextElement().getName();
+
+					if (name.startsWith(dirPath + "/")) { // filter according to the path
+						System.out.println(name);
+					}
+				}
+
+				jar.close();
 
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("Error loading from directory: " + dir.getPath());
 			}
-		}
+		} else { // Run with IDE
+		    
+			// Iterate through directory
+			final File dir = new File(cl.getClass().getResource(dirPath).getPath());
 
+			for (File fileEntry : dir.listFiles()) {
+				
+				try {
+					Image frame = ImageIO.read(fileEntry);
+					imageList.add(frame);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.out.println("Error loading from directory: " + dir.getPath());
+				}
+			}
+
+	
+		}	
 		return imageList;
 	}
-
+    
 	/* Open Website */
 	public static void openWebsite(String url) {
 		try {

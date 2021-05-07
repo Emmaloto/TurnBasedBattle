@@ -11,7 +11,6 @@ package defaultpack;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -259,13 +258,36 @@ public class Hero implements ActionListener {
 			
 			missingImg = ImageIO.read(this.getClass().getResource("res/question-mark.png"));
 
-			laughImg = loadAllFromDirectory("res/laugh").toArray(laughImg);
+			ArrayList<Image> imageHolder = new ArrayList<Image>();
+//			laughImg = GameUtilities.loadAllFromDirectory("res/laugh", this).toArray(laughImg);
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/laugh/laugh1.png")) );
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/laugh/laugh2.png")) );
+			laughImg = imageHolder.toArray(laughImg);
+			imageHolder.clear();
 
-			sAttackImg = loadAllFromDirectory("res/special").toArray(sAttackImg);
+//			sAttackImg = GameUtilities.loadAllFromDirectory("res/special", this).toArray(sAttackImg);
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/special/special1.png")) );
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/special/special2.png")) );
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/special/special3.png")) );
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/special/special4.png")) );
+			sAttackImg = imageHolder.toArray(sAttackImg);
+			imageHolder.clear();
 			
-			danceImg = loadAllFromDirectory("res/dance").toArray(danceImg);
+//			danceImg = GameUtilities.loadAllFromDirectory("res/dance", this).toArray(danceImg);
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/dance/dance1.png")) );
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/dance/dance2.png")) );
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/dance/dance3.png")) );
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/dance/dance4.png")) );
+			danceImg =  imageHolder.toArray(danceImg);
+			imageHolder.clear();
 		
-			fightImg = loadAllFromDirectory("res/fight").toArray(fightImg);
+//			fightImg = GameUtilities.loadAllFromDirectory("res/fight", this).toArray(fightImg);
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/fight/fight1.png")) );
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/fight/fight2.png")) );
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/fight/fight3.png")) );
+			imageHolder.add( ImageIO.read(this.getClass().getResource("res/fight/fight4.png")) );
+			fightImg =  imageHolder.toArray(fightImg);
+			imageHolder.clear();
 
 			specialWeapon = ImageIO.read(this.getClass().getResource("res/weapon_special.png"));
 
@@ -278,27 +300,6 @@ public class Hero implements ActionListener {
 		maxIndex = fightpose.length;
 	}
 
-	private ArrayList<Image> loadAllFromDirectory(String dirPath) {
-		// Creates file using getResource URL object
-		final File dir = new File(this.getClass().getResource(dirPath).getPath());
-
-		ArrayList<Image> imageList = new ArrayList<Image>();
-
-		for (File fileEntry : dir.listFiles()) {
-			
-			try {
-				Image frame = ImageIO.read(fileEntry);
-				imageList.add(frame);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("Error loading from directory: " + dir.getPath());
-			}
-		}
-
-		if(imageList.isEmpty()) imageList.add(missingImg);
-		return imageList;
-	}
 
 	// NOT used, somewhat obsolete
 	public void setHealth(int hit) {
